@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  s3-mounter:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-07-05T12:39:16.987922594Z"
+    description: Mount S3 buckets on K8S Nodes using goofys
+    digest: 9d055b6f5622a17ef6c4ac410ff58fb39092681976589743cd843a2fe2bf2aa1
+    name: s3-mounter
+    type: application
+    urls:
+    - https://github.com/fset-inc/helm-charts/releases/download/s3-mounter-0.1.0/s3-mounter-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-07-05T12:39:16.987931694Z"

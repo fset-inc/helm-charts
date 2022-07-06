@@ -1,0 +1,9 @@
+{{- $envFile := .Files.Glob "files/*.env" }}
+{{ if $envFile }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-env"
+data:
+{{ ($envFile).AsConfig | indent 2 }}
+{{- end }}

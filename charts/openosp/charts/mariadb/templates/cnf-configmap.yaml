@@ -1,0 +1,9 @@
+{{- $cnfFile := .Files.Glob "files/my.cnf" }}
+{{ if $cnfFile }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Chart.Name }}-config"
+data:
+{{ ($cnfFile).AsConfig | indent 2 }}
+{{- end }}

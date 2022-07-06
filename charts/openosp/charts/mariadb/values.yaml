@@ -1,0 +1,106 @@
+# Default values for mariadb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+args:
+  - mysqld
+  - --character-set-server=utf8
+  - --collation-server=utf8_general_ci
+
+dbStorageClass: ""
+
+env:
+  mySqlDatabase: drugref2
+  mySqlUser: oscar
+  
+replicaCount: 2
+
+image:
+  repository: mariadb
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "10.5"
+
+imagePullSecrets: []
+nameOverride: "db"
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: None
+  # port: 80
+
+ingress:
+  enabled: false
+
+resources:
+  limits:
+    cpu: 2
+    memory: 15Gi
+      # requests:
+      # cpu: 1
+      # memory: 6Gi # TODO: this will need to be set based on the number of people in the clinic
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+volumeMounts:
+  - name: db-config
+    mountPath: /etc/mysql
+  - name: db-code
+    mountPath: /code
+  - name: db-store
+    mountPath: /var/lib/mysql
+
+volumes:
+  - name: db-config
+    configMap: 
+      name: "{{ .Chart.Name }}-config"
+    # hostPath: "{{ include \"openosp.localStorageBasePath\" . }}/config/my.cnf"
+
+# KEEPING
+          # {{- $.Values.global.localStorage.keyName | nindent 10 }}:
+          #   path: {{ tpl .hostPath $ }}
+
+volumeClaimTemplates:
+  - name: db-code
+    accessModes: [ "ReadWriteOnce" ]
+    storageClassName: "{{ .Values.dbStorageClass }}"
+    storageRequest: 100Mi
+  - name: db-store
+    accessModes: [ "ReadWriteOnce"]
+    storageClassName: "{{ .Values.dbStorageClass }}"
+    storageRequest: 10Gi # TODO: default to 20Gi?
+
+terminationGracePeriodSeconds: 10

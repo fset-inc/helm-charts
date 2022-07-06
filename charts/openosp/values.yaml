@@ -1,0 +1,124 @@
+# Default values for openosp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  clinicLink: ""
+  localStorage:
+    enabled: true
+    keyName: hostPath
+    path: /mnt/openosp
+  services:
+    db:
+      name: db
+      port: 3306
+    expedius:
+      name: expedius
+      port: 8081
+    faxws:
+      name: faxws
+      port: 1234 # TODO: replace
+    oscar: 
+      name: oscar
+      port: 8080
+
+replicaCount: 2
+
+image:
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/app-root: /oscar
+    nginx.org/server-snippets: |
+      sub_filter_types *;
+      sub_filter 'images/OSCAR-LOGO.gif' '/static/images/openosp.ca.png';
+      sub_filter '</head>' '<link rel="stylesheet" href="/static/css/oscar-custom.css" /></head>';
+      sub_filter_once off;
+  hosts:
+    - host: "{{ .Values.global.clinicLink | default (printf \"%s.openosp.ca\" $.Release.Name) | quote }}"
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: "{{ .Values.global.services.oscar.name }}"
+              portNumber: "{{ .Values.global.services.oscar.port }}"
+        - path: /Expedius
+          pathType: Prefix
+          backend:
+            service:
+              name: "{{ .Values.global.services.expedius.name }}"
+              portNumber: "{{ .Values.global.services.expedius.port }}"
+  tls:
+    hosts:
+      - "{{ .Values.global.clinicLink | default (printf \"%s.openosp.ca\" $.Release.Name) | quote }}" 
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+networkPolicy:
+  enabled: true
+  apiVersion: ""
+  name: "default-deny"
+
+backup:
+  enabled: false
+  schedule: "* * * * *"
+  s3:
+    endpoint: ""
+    bucket: ""
+    accessKey: ""
+    secretKey: ""
+
+## OLD NGINX SNIPPET
+
+# listen 443 ssl;
+# location / {
+#   sub_filter_types *;
+
+#   sub_filter 'OSCAR McMaster Trunk' '${LOGIN_TITLE}';
+#   sub_filter 'images/OSCAR-LOGO.gif' '/static/images/openosp.ca.png';
+#   sub_filter 'www.oscarcanada.org</a>' 'www.oscarcanada.org</a><div id="login-text">${LOGIN_TEXT}</div>';
+#   sub_filter '</head>' '<link rel="stylesheet" href="/static/css/oscar-custom.css" /></head>';
+#   sub_filter_once off;
+# }

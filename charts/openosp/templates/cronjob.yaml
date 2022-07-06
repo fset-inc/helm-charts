@@ -1,0 +1,36 @@
+{{- if .Values.backup.enabled -}}
+{{- with .Values.backup.s3 -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $.Release.Name }}-s3-env"
+data:
+  AWS_ACCESS_KEY_ID: {{ .accessKey }}
+  AWS_SECRET_ACCESS_KEY: {{ .secretKey }}
+  BUCKET_NAME: {{ .bucket }}
+  S3_ENDPOINT: {{ .endpoint }}
+{{- end }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup-job
+  labels:
+    {{- include "openosp.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.backup.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ntx-s3-backup
+              image: busybox:1.28 # TODO: replace
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              {{- if .Values.backup.s3 }}
+              envFrom:
+                - configMapRef:
+                    name: "{{ .Release.Name }}-s3-env"
+              {{- end }}
+          restartPolicy: OnFailure
+{{- end }}

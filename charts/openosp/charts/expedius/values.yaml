@@ -1,0 +1,93 @@
+# Default values for expedius.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+env:
+  javaOpts: -Dlog4j2.formatMsgNoLookups=true
+
+replicaCount: 2
+
+image:
+  repository: openosp/expedius
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  # port: 8081
+
+resources:
+  limits:
+    cpu: 2
+    memory: 4Gi
+      # requests:
+      # cpu: 100m
+      # memory: 1Gi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+restartPolicy: Always
+
+volumeMounts:
+  - name: expedius-data
+    mountPath: /var/lib/expedius
+  - name: tomcat-users
+    mountPath: /usr/local/tomcat/conf/tomcat-users.xml
+      # subPath: tomcat-users.xml
+  - name: ssl-crt
+    mountPath: /usr/local/tomcat/conf/ssl.crt
+  - name: ssl-key
+    mountPath: /usr/local/tomcat/conf/ssl.key
+
+volumes:
+  - name: expedius-data
+    path: "{{ include \"openosp.localStorageBasePath\" . }}/data/expedius"
+  - name: tomcat-users
+    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/tomcat-users.xml"
+  - name: ssl-crt
+    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/ssl.crt"
+  - name: ssl-key
+    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/ssl.key"

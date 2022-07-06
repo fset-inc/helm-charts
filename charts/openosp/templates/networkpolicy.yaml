@@ -1,0 +1,17 @@
+{{- if .Values.networkPolicy.enabled }}
+kind: NetworkPolicy
+{{- with .Values.networkPolicy }}
+apiVersion: {{ .apiVersion | default "networking.k8s.io/v1" }}
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "openosp.labels" $ | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "openosp.selectorLabels" $ | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+{{- end }}
+{{- end }}

@@ -76,22 +76,10 @@ tolerations: []
 affinity: {}
 
 volumeMounts:
-  - name: db-config
-    mountPath: /etc/mysql
   - name: db-code
     mountPath: /code
   - name: db-store
     mountPath: /var/lib/mysql
-
-volumes:
-  - name: db-config
-    configMap: 
-      name: "{{ .Chart.Name }}-config"
-    # hostPath: "{{ include \"openosp.localStorageBasePath\" . }}/config/my.cnf"
-
-# KEEPING
-          # {{- $.Values.global.localStorage.keyName | nindent 10 }}:
-          #   path: {{ tpl .hostPath $ }}
 
 volumeClaimTemplates:
   - name: db-code

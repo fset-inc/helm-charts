@@ -58,13 +58,6 @@ spec:
           volumeMounts:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
           workingDir: /code
-      volumes:
-        {{- range .Values.volumes }}
-        - name: {{ .name }}
-          configMap:
-            name: {{ tpl .configMap.name $ }}
-
-        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

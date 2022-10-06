@@ -98,7 +98,8 @@ networkPolicy:
 s3:
   datashimApiVersion: "com.ie.ibm.hpsys/v1alpha1"
   endpoint: ""
-  secretName: ""
+  secretName: "s3-secret"
+  secretNamespace: ""
 
 backup:
   enabled: false

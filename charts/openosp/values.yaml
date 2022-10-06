@@ -43,15 +43,8 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
 
 ingress:
   enabled: true
@@ -100,6 +93,12 @@ networkPolicy:
   enabled: true
   apiVersion: ""
   name: "default-deny"
+
+
+s3:
+  datashimApiVersion: "com.ie.ibm.hpsys/v1alpha1"
+  endpoint: ""
+  secretName: ""
 
 backup:
   enabled: false

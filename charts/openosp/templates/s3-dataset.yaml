@@ -1,0 +1,13 @@
+apiVersion: "{{ .Values.s3.datashimApiVersion }}"
+kind: Dataset
+metadata:
+  name: s3-bucket
+spec:
+  local:
+    type: "COS"
+    secret-name: "{{ .Values.s3.secretName }}"
+    secret-namespace: "{{ .Release.Name }}"
+    endpoint: "{{ .Values.s3.endpoint }}"
+    bucket: "{{ .Release.Name }}"
+    readonly: "false"
+    provision: "false" # DLF will allocate bucket on the COS if it doesn't exist [Default: false]

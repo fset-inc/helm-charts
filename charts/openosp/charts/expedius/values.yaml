@@ -72,22 +72,32 @@ affinity: {}
 restartPolicy: Always
 
 volumeMounts:
-  - name: expedius-data
+  - name: bucket-claim
     mountPath: /var/lib/expedius
-  - name: tomcat-users
+    subPath: expedius
+  - name: tomcat-config
     mountPath: /usr/local/tomcat/conf/tomcat-users.xml
-      # subPath: tomcat-users.xml
   - name: ssl-crt
     mountPath: /usr/local/tomcat/conf/ssl.crt
   - name: ssl-key
     mountPath: /usr/local/tomcat/conf/ssl.key
 
 volumes:
-  - name: expedius-data
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/data/expedius"
-  - name: tomcat-users
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/tomcat-users.xml"
+  - name: bucket-claim
+    persistentVolumeClaim:
+      claimName: s3-bucket
+  - name: tomcat-config
+    configMap:
+      name: tomcat-users
   - name: ssl-crt
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/ssl.crt"
+    secret:
+      secretName: ssl
+      items:
+        - key: ssl.crt
+          path: ssl.crt
   - name: ssl-key
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/ssl.key"
+    secret:
+      secretName: ssl
+      items:
+        - key: ssl.key
+          path: ssl.key

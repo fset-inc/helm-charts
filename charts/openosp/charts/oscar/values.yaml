@@ -79,40 +79,51 @@ persistence: {}
 restartPolicy: Always
 
 volumeMounts:
-  - name: oscar-properties
+  - name: oscar-config
     mountPath: /root/oscar.properties 
       # subPath: oscar.properties
-  - name: drugref2-properties
+  - name: drugref2-config
     mountPath: /root/drugref2.properties
       # subPath: drugref2.properties
-  - name: oscar-data
+  - name: bucket-claim
     mountPath: /var/lib/OscarDocument
-  - name: oscar-chain
-    mountPath: /usr/local/tomcat/conf/chain.pem
-      # subPath: chain.pem
+    subPath: oscar
+    #- name: oscar-chain
+    # mountPath: /usr/local/tomcat/conf/chain.pem
+    # subPath: chain.pem
   - name: ssl-crt
     mountPath: /usr/local/tomcat/conf/ssl.crt
   - name: ssl-key
     mountPath: /usr/local/tomcat/conf/ssl.key
-  - name: login-css
+  - name: bucket-claim
     mountPath: /static/css
-  - name: login-img
+    subPath: /static/css
+  - name: bucket-claim
     mountPath: /static/images
+    subPath: static/images
 
 volumes:
-  - name: oscar-properties
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/oscar.properties"
-  - name: drugref2-properties
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/drugref2.properties"
-  - name: oscar-data
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/data/OscarDocument"
-  - name: oscar-chain
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/chain.pem"
+  - name: oscar-config
+    configMap:
+      name: oscar-properties
+  - name: drugref2-config
+    configMap:
+      name: drugref2-properties
+  - name: bucket-claim
+    persistentVolumeClaim:
+      claimName: s3-bucket
+  # TODO: TBD
+  #  - name: oscar-chain
+  #  path: "{{ include \"openosp.localStorageBasePath\" . }}/config/chain.pem"
   - name: ssl-crt
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/ssl.crt"
+    secret:
+      secretName: ssl
+      items:
+        - key: ssl.crt
+          path: ssl.crt
   - name: ssl-key
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/config/ssl.key"
-  - name: login-css
-    path: "{{ include \"openosp.localStorageBasePath\" . }}/login/css"
-  - name: login-img
-    path: "/mnt/openosp/static/images"
+    secret:
+      secretName: ssl
+      items:
+        - key: ssl.key
+          path: ssl.key

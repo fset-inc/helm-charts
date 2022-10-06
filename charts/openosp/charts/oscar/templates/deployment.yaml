@@ -40,25 +40,13 @@ spec:
           ports:
             - containerPort: {{ .Values.service.port }}
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
       restartPolicy: {{ .Values.restartPolicy }}
       volumes:
-        {{- range .Values.volumes }}
-        - name: {{ .name }}
-          {{- $.Values.global.localStorage.keyName | nindent 10 }}:
-            path: {{ tpl .path $ }}
-        {{- end}}
+        {{- toValm .Values.volumes | nindent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

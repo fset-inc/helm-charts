@@ -46,7 +46,7 @@ spec:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
       restartPolicy: {{ .Values.restartPolicy }}
       volumes:
-        {{- toValm .Values.volumes | nindent 8 }}
+        {{- toYalm .Values.volumes | nindent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

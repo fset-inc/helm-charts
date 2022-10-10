@@ -6,7 +6,7 @@ spec:
   local:
     type: "COS"
     secret-name: "{{ .Values.s3.secretName }}"
-    secret-namespace: "{{ .Values.s3.secretNamespace }}"
+    secret-namespace: "{{ .Release.Name }}"
     endpoint: "{{ .Values.s3.endpoint }}"
     bucket: "{{ .Release.Name }}"
     readonly: "false"

@@ -37,7 +37,7 @@ spec:
             - configMapRef:
                 name: "{{ .Chart.Name }}-env"
             - configMapRef:
-                name: "{{ .Release.Name }}-env"
+                name: "local-env"
           ports:
             - containerPort: {{ .Values.global.services.faxws.port }}
               protocol: TCP

@@ -3,11 +3,6 @@
 # Declare variables to be passed into your templates.
 
 global:
-  clinicLink: ""
-  localStorage:
-    enabled: true
-    keyName: hostPath
-    path: /mnt/openosp
   services:
     db:
       name: db
@@ -58,7 +53,7 @@ ingress:
       sub_filter '</head>' '<link rel="stylesheet" href="/static/css/oscar-custom.css" /></head>';
       sub_filter_once off;
   hosts:
-    - host: "{{ .Values.global.clinicLink | default (printf \"%s.openosp.ca\" $.Release.Name) | quote }}"
+    - host: "{{ printf \"%s.cloud.fset.ca\" $.Release.Name | quote }}"
       paths:
         - path: /
           pathType: Prefix
@@ -74,7 +69,7 @@ ingress:
               portNumber: "{{ .Values.global.services.expedius.port }}"
   tls:
     hosts:
-      - "{{ .Values.global.clinicLink | default (printf \"%s.openosp.ca\" $.Release.Name) | quote }}" 
+      - "{{ printf \"%s.cloud.fset.ca\" $.Release.Name | quote }}" 
 
 autoscaling:
   enabled: false
@@ -93,7 +88,6 @@ networkPolicy:
   enabled: true
   apiVersion: ""
   name: "default-deny"
-
 
 s3:
   datashimApiVersion: "com.ie.ibm.hpsys/v1alpha1"

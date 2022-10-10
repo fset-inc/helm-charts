@@ -14,6 +14,16 @@ entries:
   openosp:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-10-10T12:51:38.674432889Z"
+    description: A Helm chart for Kubernetes
+    digest: e2d9297f3600263fb8502e223705a32d4199e51305f391359451bcdcc67bccd8
+    name: openosp
+    type: application
+    urls:
+    - https://github.com/fset-inc/helm-charts/releases/download/openosp-0.1.3/openosp-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-10-10T12:36:51.526954691Z"
     description: A Helm chart for Kubernetes
     digest: 78b5ec664f0fcd9cb4007e34096afafc9ca7dd44151328b6c0016ec8aeab9efd
@@ -53,4 +63,4 @@ entries:
     urls:
     - https://github.com/fset-inc/helm-charts/releases/download/s3-mounter-0.1.0/s3-mounter-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-10T12:36:51.526972091Z"
+generated: "2022-10-10T12:51:38.674453978Z"

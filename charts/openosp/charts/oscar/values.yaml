@@ -97,7 +97,7 @@ volumeMounts:
     mountPath: /usr/local/tomcat/conf/ssl.key
   - name: bucket-claim
     mountPath: /static/css
-    subPath: /static/css
+    subPath: static/css
   - name: bucket-claim
     mountPath: /static/images
     subPath: static/images

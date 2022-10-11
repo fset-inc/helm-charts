@@ -3,8 +3,10 @@
 # Declare variables to be passed into your templates.
 
 env:
-  javaOpts: -Dlog4j2.formatMsgNoLookups=true
-  mySqlHost: db
+  - key: JAVA_OPTS
+    value: -Dlog4j2.formatMsgNoLookups=true
+  - key: MYSQL_HOST
+    value: db
 
 replicaCount: 2
 
@@ -89,11 +91,11 @@ volumes:
     secret:
       secretName: ssl
       items:
-        - key: ssl.crt
-          path: ssl.crt
+        - key: tls.crt
+          path: tls.crt
   - name: ssl-key
     secret:
       secretName: ssl
       items:
-        - key: ssl.key
-          path: ssl.key
+        - key: tls.key
+          path: tls.key

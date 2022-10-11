@@ -3,4 +3,6 @@ kind: ConfigMap
 metadata:
   name: "{{ .Chart.Name }}-env"
 data:
-  JAVA_OPTS: {{ .Values.env.javaOpts }}
+  {{- range .Values.env }}
+  {{ .key }}: {{ .value }} 
+  {{- end }}

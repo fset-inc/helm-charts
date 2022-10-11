@@ -7,8 +7,10 @@
   # TZ: {{ .Values.global.env.timezone }}
 
 env:
-  catalinaOpts: -Djava.awt.headless=true
-  javaOpts: -Dlog4j2.formatMsgNoLookups=true -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -Xmx2G -Xms2G -XX:MaxPermSize=1G -XX:CMSInitiatingOccupancyFraction=68 -Xincgc -Dorg.apache.el.parser.COERCE_TO_ZERO=true
+  - key: CATALINA_OPTS
+    value: -Djava.awt.headless=true
+  - key: JAVA_OPTS
+    value: -Dlog4j2.formatMsgNoLookups=true -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -Xmx2G -Xms2G -XX:MaxPermSize=1G -XX:CMSInitiatingOccupancyFraction=68 -Xincgc -Dorg.apache.el.parser.COERCE_TO_ZERO=true
 
 replicaCount: 2
 
@@ -119,11 +121,11 @@ volumes:
     secret:
       secretName: ssl
       items:
-        - key: ssl.crt
-          path: ssl.crt
+        - key: tls.crt
+          path: tls.crt
   - name: ssl-key
     secret:
       secretName: ssl
       items:
-        - key: ssl.key
-          path: ssl.key
+        - key: tls.key
+          path: tls.key

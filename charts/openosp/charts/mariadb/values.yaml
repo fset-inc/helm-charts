@@ -10,8 +10,10 @@ args:
 dbStorageClass: ""
 
 env:
-  mySqlDatabase: drugref2
-  mySqlUser: oscar
+  - key: MYSQL_DATABASE
+    value: drugref2
+  - key: MYSQL_USER
+    value: oscar
   
 replicaCount: 2
 

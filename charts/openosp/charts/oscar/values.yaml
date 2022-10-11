@@ -83,10 +83,10 @@ restartPolicy: Always
 volumeMounts:
   - name: oscar-config
     mountPath: /root/oscar.properties 
-      # subPath: oscar.properties
+    subPath: oscar.properties
   - name: drugref2-config
     mountPath: /root/drugref2.properties
-      # subPath: drugref2.properties
+    subPath: drugref2.properties
   - name: bucket-claim
     mountPath: /var/lib/OscarDocument
     subPath: oscar
@@ -108,9 +108,15 @@ volumes:
   - name: oscar-config
     configMap:
       name: oscar-properties
+      items:
+        - key: oscar.properties
+          path: oscar.properties
   - name: drugref2-config
     configMap:
       name: drugref2-properties
+      items:
+        - key: drugref2.properties
+          path: drugref2.properties
   - name: bucket-claim
     persistentVolumeClaim:
       claimName: s3-bucket

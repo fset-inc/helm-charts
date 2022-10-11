@@ -78,6 +78,7 @@ volumeMounts:
     subPath: expedius
   - name: tomcat-config
     mountPath: /usr/local/tomcat/conf/tomcat-users.xml
+    subPath: tomcat-users.xml
   - name: ssl-crt
     mountPath: /usr/local/tomcat/conf/ssl.crt
   - name: ssl-key
@@ -90,6 +91,9 @@ volumes:
   - name: tomcat-config
     configMap:
       name: tomcat-users
+      items:
+        - key: tomcat-users.xml
+          path: tomcat-users.xml
   - name: ssl-crt
     secret:
       secretName: ssl

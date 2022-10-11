@@ -37,9 +37,12 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             {{- toYaml .Values.args | nindent 12 }}
+          env:
+            {{- range .Values.env }}
+            - name: {{ .key }}
+              value: {{ .value }} 
+            {{- end }}
           envFrom: 
-            - configMapRef:
-                name: "{{ .Chart.Name }}-env"
             - configMapRef:
                 name: "local-env"
           ports:

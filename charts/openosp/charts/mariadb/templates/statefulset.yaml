@@ -42,9 +42,8 @@ spec:
             - name: {{ .key }}
               value: {{ .value }} 
             {{- end }}
-          envFrom: 
-            - configMapRef:
-                name: "local-env"
+          envFrom:
+            {{- toYaml .Values.envFrom | nindent 12 }}
           ports:
             - containerPort: {{ .Values.global.services.db.port }}
               protocol: TCP

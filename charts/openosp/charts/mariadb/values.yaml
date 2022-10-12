@@ -14,6 +14,9 @@ env:
     value: drugref2
   - key: MYSQL_USER
     value: oscar
+envFrom: 
+  - configMapRef:
+      name: "local-env"
   
 replicaCount: 2
 

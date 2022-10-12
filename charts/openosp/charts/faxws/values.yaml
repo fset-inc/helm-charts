@@ -7,6 +7,9 @@ env:
     value: -Dlog4j2.formatMsgNoLookups=true
   - key: MYSQL_HOST
     value: db
+envFrom:
+  - configMapRef:
+      name: "local-env"
 
 replicaCount: 2
 

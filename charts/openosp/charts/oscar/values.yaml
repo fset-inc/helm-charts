@@ -11,6 +11,9 @@ env:
     value: -Djava.awt.headless=true
   - key: JAVA_OPTS
     value: -Dlog4j2.formatMsgNoLookups=true -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -Xmx2G -Xms2G -XX:MaxPermSize=1G -XX:CMSInitiatingOccupancyFraction=68 -Xincgc -Dorg.apache.el.parser.COERCE_TO_ZERO=true
+envFrom:
+  - configMapRef:
+      name: "local-env"
 
 replicaCount: 2
 

@@ -5,6 +5,9 @@
 env:
   - key: JAVA_OPTS
     value: -Dlog4j2.formatMsgNoLookups=true
+envFrom:
+  - configMapRef:
+      name: "local-env"
 
 replicaCount: 2
 

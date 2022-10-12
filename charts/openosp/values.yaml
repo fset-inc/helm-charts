@@ -70,6 +70,7 @@ ingress:
   tls:
     hosts:
       - "{{ printf \"%s.cloud.fset.ca\" $.Release.Name | quote }}" 
+    secretName: tls-domain
 
 autoscaling:
   enabled: false

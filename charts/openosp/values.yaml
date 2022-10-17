@@ -90,6 +90,21 @@ networkPolicy:
   apiVersion: ""
   name: "default-deny"
 
+akv2k8s:
+  enabled: false
+  # vaultName: "fake-vault"
+  # secrets:
+  #  - objectName: "test"
+  #    type: secret
+  #    sync: true
+  #    outputName: "test-out"
+  #    data: "dataKey"
+  #  - objectName: "cert-test"
+  #    type: certificate
+  #    sync: true
+  #    outputName: "cert-test-out"
+  #    data: "kubernetes.io/tls"
+
 s3:
   datashimApiVersion: "com.ie.ibm.hpsys/v1alpha1"
   endpoint: ""
